@@ -1,0 +1,56 @@
+services:
+  - type: web
+    name: mc-discord-bot
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node bot.js
+    
+    envVars:
+      # ═══════════════════════════════════════════════════════════
+      # Discord Configuration - Fill these in after deployment
+      # ═══════════════════════════════════════════════════════════
+      - key: DISCORD_TOKEN
+        sync: false
+      
+      - key: STATUS_CHANNEL_ID
+        sync: false
+      
+      - key: CHAT_CHANNEL_ID
+        sync: false
+      
+      - key: ADMIN_ROLE_ID
+        sync: false
+      
+      - key: OWNER_ID
+        sync: false
+      
+      # ═══════════════════════════════════════════════════════════
+      # Minecraft Server Configuration
+      # ═══════════════════════════════════════════════════════════
+      - key: MC_SERVER_IP
+        sync: false
+      
+      - key: MC_SERVER_PORT
+        value: "25565"
+      
+      - key: MC_SERVER_DISPLAY_NAME
+        value: "BlockHaven"
+      
+      # ═══════════════════════════════════════════════════════════
+      # Security Secrets - Auto-generated random values
+      # ═══════════════════════════════════════════════════════════
+      - key: CHAT_WEBHOOK_SECRET
+        generateValue: true
+      
+      - key: MC_RELAY_SECRET
+        generateValue: true
+      
+      # ═══════════════════════════════════════════════════════════
+      # Optional Configuration
+      # ═══════════════════════════════════════════════════════════
+      - key: MC_RELAY_URL
+        value: ""
+      
+      - key: STATUS_CHECK_INTERVAL_MS
+        value: "30000"
