@@ -1,0 +1,61 @@
+services:
+  - type: web
+    name: mc-discord-bot
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node bot.js
+    
+    # Persistent disk for whitelist.json
+    # Note: Render now requires disks to be created separately in dashboard
+    # This is optional - you can manage whitelist without persistent disk
+    
+    envVars:
+      # Discord Configuration
+      - key: DISCORD_TOKEN
+        sync: false
+        generateValue: false
+      
+      - key: STATUS_CHANNEL_ID
+        sync: false
+        generateValue: false
+      
+      - key: CHAT_CHANNEL_ID
+        sync: false
+        generateValue: false
+      
+      - key: ADMIN_ROLE_ID
+        sync: false
+        generateValue: false
+      
+      - key: OWNER_ID
+        sync: false
+        generateValue: false
+      
+      # Minecraft Server Configuration
+      - key: MC_SERVER_IP
+        sync: false
+        generateValue: false
+      
+      - key: MC_SERVER_PORT
+        value: "25565"
+      
+      - key: MC_SERVER_DISPLAY_NAME
+        value: "BlockHaven"
+      
+      # Security Secrets
+      - key: CHAT_WEBHOOK_SECRET
+        sync: false
+        generateValue: true
+      
+      - key: MC_RELAY_SECRET
+        sync: false
+        generateValue: true
+      
+      # Relay Configuration
+      - key: MC_RELAY_URL
+        value: ""
+      
+      # Status Check Interval
+      - key: STATUS_CHECK_INTERVAL_MS
+        value: "30000"
