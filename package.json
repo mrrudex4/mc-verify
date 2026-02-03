@@ -1,0 +1,15 @@
+{
+  "name": "mc-discord-bot",
+  "version": "2.0.0",
+  "description": "Minecraft ↔ Discord: whitelist, live status, chat bridge. Render-ready.",
+  "main": "bot.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "express": "^4.18.2",
+    "minecraft-server-util": "^4.1.2"
+  }
+}

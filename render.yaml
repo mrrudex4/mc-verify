@@ -1,0 +1,70 @@
+# ─── render.yaml ─────────────────────────────────────────────────
+# Render Blueprint — drag this into https://render.com → "Create New → Blueprint"
+# Then fill in every env var marked  <<<FILL IN>>>  in the Render dashboard.
+#
+# What it creates:
+#   • 1 Web Service  (the bot + HTTP server, free tier eligible)
+#   • 1 Persistent Disk (7 GB, $1/mo) — stores whitelist.json across deploys
+
+services:
+  - type: web
+    name: mc-discord-bot
+    runtime: node
+    plan: free                          # upgrade to "starter" if you want always-on
+
+    # ── build ──────────────────────────────────────────────────
+    buildCommand: npm install
+    startCommand: node bot.js
+
+    # ── persistent disk ────────────────────────────────────────
+    # Mounted at /data inside the container.
+    # whitelist.json lives here and survives redeploys.
+    disks:
+      - name: mc-bot-data
+        mountPath: /data
+        sizeGB: 7
+
+    # ── env vars ───────────────────────────────────────────────
+    # Render sets PORT for you — do NOT override it.
+    env:
+      # Discord ──────────────────────────────────────────────────
+      DISCORD_TOKEN:
+        sync: false                     # keeps it out of the dashboard list
+        value: "<<<FILL IN>>>"
+
+      STATUS_CHANNEL_ID:
+        value: "<<<FILL IN>>>"
+      CHAT_CHANNEL_ID:
+        value: "<<<FILL IN>>>"
+      ADMIN_ROLE_ID:
+        value: "<<<FILL IN>>>"          # role that can /whitelist add|remove
+      OWNER_ID:
+        value: "<<<FILL IN>>>"          # your Discord user ID (always admin)
+
+      # Minecraft ────────────────────────────────────────────────
+      MC_SERVER_IP:
+        value: "<<<FILL IN>>>"          # public IP / hostname of your MC server
+      MC_SERVER_PORT:
+        value: "25565"
+      MC_SERVER_DISPLAY_NAME:
+        value: "My MC Server"
+
+      # Chat webhook auth ─────────────────────────────────────────
+      # Your MC server must send this in the X-Webhook-Secret header
+      # when POSTing to /chat.  Pick any random string.
+      CHAT_WEBHOOK_SECRET:
+        sync: false
+        value: "<<<FILL IN>>>"
+
+      # Discord → MC relay ────────────────────────────────────────
+      # URL of an HTTP endpoint on your MC server that accepts a POST
+      # with { player, message }.  Leave blank to disable the relay.
+      MC_RELAY_URL:
+        value: ""                       # e.g. http://your-mc-ip:8080/relay
+      MC_RELAY_SECRET:
+        sync: false
+        value: ""                       # optional auth header for the relay
+
+      # Status monitor interval (ms) ────────────────────────────
+      STATUS_CHECK_INTERVAL_MS:
+        value: "30000"
